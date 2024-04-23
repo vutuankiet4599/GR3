@@ -1,0 +1,10 @@
+.custom-ul {
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+}
+
+.custom-ul li {
+    font-size: 14px;
+    margin-left: 10px;
+    list-style-type: disc;
+}
