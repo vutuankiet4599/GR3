@@ -38,7 +38,7 @@ class CreateJobRequest extends FormRequest
             'level' => 'required|string|in:intern,fresher,junior,middle,senior,leader,manager',
             'city_id' => 'required|integer|min:1',
             'tags' => 'array',
-            'name' => 'required|integer',
+            'description' => 'string',
         ];
     }
 }

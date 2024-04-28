@@ -1,7 +1,6 @@
 import "./App.css";
-import { useDispatch, useSelector } from "react-redux";
-import { tokenSlice, userSlice } from "./redux/slices";
-import { tokenSelector, userSelector } from "./redux/selectors";
+import { useSelector } from "react-redux";
+import { tokenSelector } from "./redux/selectors";
 import { useEffect } from "react";
 import { RouterProvider } from "react-router-dom";
 import Router from "./routers";

@@ -41,7 +41,7 @@ const UserRouter = {
             element: <JobSearchPage />,
         },
         {
-            path: "/code",
+            path: "/code/:roomCode",
             element: <CodeEditorPage />,
         },
     ],

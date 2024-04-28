@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 const JobItem = ({ job }) => {
     return (
         <ListItem
-            disableGutters
             secondaryAction={
                 <Link to={`/company/jobs/${job.id}`}>
                     <IconButton>
@@ -14,6 +13,7 @@ const JobItem = ({ job }) => {
                     </IconButton>
                 </Link>
             }
+            className="border px-8 py-2 hover:bg-slate-50 cursor-pointer"
         >
             <ListItemText primary={job.name} />
         </ListItem>

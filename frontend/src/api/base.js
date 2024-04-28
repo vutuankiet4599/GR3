@@ -12,7 +12,7 @@ const axiosInstanceGenerator = () => {
 
     instance.interceptors.response.use(
         (res) => res.data,
-        (err) => Promise.reject(err)
+        (err) => Promise.reject(err),
     );
 
     return instance;

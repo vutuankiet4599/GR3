@@ -99,21 +99,24 @@ const JobService = {
                 name: data.name,
                 description: data.description,
                 salary: data.salary,
-                "welfare[]": data.welfare,
+                welfare: data.welfare,
                 experience: data.experience,
-                "interview[]": data.interview,
+                interview: data.interview,
                 type: data.type,
                 contract: data.contract,
-                "work[]": data.work,
-                "skill[]": data.skill,
+                work: data.work,
+                skill: data.skill,
                 level: data.level,
                 city_id: data.cityId,
-                "tags[]": data.tags,
+                tags: data.tags,
             });
+            console.log(response);
             return {
                 data: response.data,
+                message: "Đăng tuyển dụng thành công!",
             };
         } catch (error) {
+            console.log(error);
             return {
                 isError: true,
                 message: "Đăng công việc mới thất bại. Mời thử lại sau!",
@@ -131,6 +134,42 @@ const JobService = {
             return {
                 isError: true,
                 message: "Không thể lấy công việc. Mời thử lại sau!",
+            };
+        }
+    },
+
+    companyJob: async (id) => {
+        try {
+            let response = await authApi.get(`/v1/companies/jobs/${id}`);
+            let data = response.data;
+            data.work = JSON.parse(data.work);
+            data.skill = JSON.parse(data.skill);
+            data.welfare = JSON.parse(data.welfare);
+            data.interview = JSON.parse(data.interview);
+            return {
+                data: data,
+            };
+        } catch (error) {
+            return {
+                isError: true,
+                message: "Không thể lấy công việc. Mời thử lại sau!",
+            };
+        }
+    },
+
+    updateApplicationStatus: async (id, status) => {
+        try {
+            let response = await authApi.put(`/v1/companies/applications/${id}/status`, {
+                status: status,
+            });
+            return {
+                data: response.data,
+            };
+        } catch (error) {
+            console.log(error);
+            return {
+                isError: true,
+                message: "Không thể xử lý được. Mời thử lại sau!",
             };
         }
     },

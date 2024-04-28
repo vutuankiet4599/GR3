@@ -20,12 +20,14 @@ const Bell = () => {
 
     const user = useSelector(userSelector);
 
+    const [notifications, setNotifications] = useState([]);
+
     useEffect(() => {
         let devChannel, devListener;
         if (user.id && window.Echo) {
             devChannel = window.Echo.channel(`dev-${user.id}`);
             devListener = (e) => {
-                console.log(e);
+                setNotifications((notifications) => [...notifications, e.data]);
             };
 
             devChannel.listen("DevReceiveNotificationFromCompanyEvent", devListener);
@@ -44,9 +46,13 @@ const Bell = () => {
     return (
         <>
             <Button className="w-fit h-fit outline-none border-none" aria-describedby={id} onClick={handleClick}>
-                <Badge badgeContent={3} color="error" className="mr-3">
+                {notifications.length > 0 ? (
+                    <Badge badgeContent={notifications.length} color="error" className="mr-3">
+                        <NotificationsNoneIcon color="primary" />
+                    </Badge>
+                ) : (
                     <NotificationsNoneIcon color="primary" />
-                </Badge>
+                )}
             </Button>
             <Popover
                 id={id}
@@ -62,8 +68,11 @@ const Bell = () => {
                     horizontal: "right",
                 }}
             >
-                {[...Array(5)].map((val, index) => (
-                    <Typography key={index}>Value number {val}</Typography>
+                {notifications.map((notification, index) => (
+                    <Typography sx={{ p: 2 }} key={index}>
+                        Công ty <b>{notification.company}</b> đã{" "}
+                        <b>{notification.isAccepted ? "chấp nhận" : "từ chối"}</b> ứng tuyển của bạn
+                    </Typography>
                 ))}
             </Popover>
         </>

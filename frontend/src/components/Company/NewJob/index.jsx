@@ -226,11 +226,11 @@ const NewJob = () => {
                             labelId="city"
                             label="Địa chỉ công việc"
                             className="min-w-full"
-                            name="contract"
-                            value={newJob.contract}
+                            name="cityId"
+                            value={newJob.cityId}
                             onChange={handleChangeAtomicValue}
                         >
-                            {Object.keys(City).map((value, index) => (
+                            {City.map((value, index) => (
                                 <MenuItem key={index} value={value.id}>
                                     {value.name}
                                 </MenuItem>
