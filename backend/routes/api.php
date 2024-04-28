@@ -64,6 +64,8 @@ Route::prefix('/v1')->group(function () {
         Route::middleware('auth:companies')->group(function () {
             Route::post('/jobs', [ApplicationJobController::class, 'create']);
             Route::get('/jobs', [ApplicationJobController::class, 'companyJobs']);
+            Route::get('/jobs/{id}', [ApplicationJobController::class, 'companyJob']);
+            Route::put('/applications/{id}/status', [ApplicationJobController::class, 'changeStatusApplication']);
         });
     });
     

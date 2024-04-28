@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api\V1\Dev;
 
+use App\Events\DevReceiveNotificationFromCompanyEvent;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Company\Application\ChangeStatusApplicationRequest;
 use App\Http\Requests\Company\Job\CreateJobRequest;
 use App\Http\Requests\Dev\ApplicationJob\ApplyJobRequest;
 use App\Models\Application;
@@ -152,10 +154,16 @@ class ApplicationJobController extends Controller
             if (!$response) {
                 return $this->failure([], "Can't create job", "");
             }
+            
             if (!empty($data['tags'])) {
-                $response->tags()->attach($data['tags']);
+                $tagIds = array_map(function ($obj) {
+                    return $obj['id'];
+                }, $data['tags']);
+                $tagIds = array_map('intval', $tagIds);
+                $response->tags()->attach($tagIds);
             }
-            return $this->repository($response, "Job created successfully");
+            
+            return $this->success($response, "Job created successfully");
         } catch (\Throwable $th) {
             return $this->failure($th->getTrace(), $th->getMessage(), $th->getCode());
         }
@@ -172,8 +180,41 @@ class ApplicationJobController extends Controller
         }
     }
 
-    public function changeStatusApplication(Request $request, $id)
+    public function companyJob(Request $request, $id)
     {
-        
+        try {
+            $job = $this->repository->find($id);
+            if (!$job) {
+                return $this->failure([], 'No record found', '', 404);
+            }
+            $job->load('applications.user');
+            return $this->success($job);
+        } catch (\Throwable $th) {
+            return $this->failure($th->getTrace(), $th->getMessage(), $th->getCode());
+        }
+    }
+
+    public function changeStatusApplication(ChangeStatusApplicationRequest $request, $id)
+    {
+        try {
+            $data = $request->validated();
+            $application = Application::find($id);
+            if (!$application) {
+                return $this->failure([], 'Not found apply', '', 404);
+            }
+            $response = $application->update(['status' => $data['status']]);
+            $notificationData = [];
+            $company = $request->user('companies');
+            $notificationData['company'] = $company->name;
+            if ($data['status'] == 'accepted') {
+                $notificationData['isAccepted'] = true;
+            } else {
+                $notificationData['isAccepted'] = false;
+            }
+            event(New DevReceiveNotificationFromCompanyEvent($notificationData, $application->user_id));
+            return $this->success($response);
+        } catch (\Throwable $th) {
+            return $this->failure($th->getTrace(), $th->getMessage(), $th->getCode());
+        }
     }
 }
