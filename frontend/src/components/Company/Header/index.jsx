@@ -18,11 +18,11 @@ import MenuIcon from "@mui/icons-material/Menu";
 import logoImage from "../../../assets/img/logo.png";
 import userImage from "../../../assets/img/user.png";
 import { Link, useNavigate } from "react-router-dom";
-import DevAuthService from "../../../services/Auth/Dev/DevAuthService";
 import { toast } from "react-toastify";
 import tokenSlice from "../../../redux/slices/tokenSlice";
 import companySlice from "../../../redux/slices/companySlice";
 import { companySelector } from "../../../redux/selectors";
+import CompanyAuthService from "../../../services/Auth/Company/CompanyAuthService";
 
 const pages = [["Ứng viên tiềm năng", "/candidates"]];
 
@@ -51,11 +51,11 @@ const Header = () => {
     };
 
     const handleLogout = async () => {
-        let response = await DevAuthService.logout();
+        let response = await CompanyAuthService.logout();
         if (response.isError) {
             return toast.error(response.message);
         }
-        dispatch(companySlice.actions.resetUserInfo());
+        dispatch(companySlice.actions.resetCompany());
         dispatch(tokenSlice.actions.resetToken());
         navigate("/");
         toast.success(response.message);

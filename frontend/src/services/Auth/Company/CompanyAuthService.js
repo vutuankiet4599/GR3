@@ -16,7 +16,8 @@ const CompanyAuthService = {
                 },
             };
         } catch (error) {
-            if (error.response.status == 500) {
+            console.log(error);
+            if (error.response?.status == 500) {
                 return {
                     isError: true,
                     message: "Lỗi hệ thống, mời quay lại sau",

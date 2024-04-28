@@ -36,6 +36,7 @@ const CodeEditorPage = () => {
             console.log("ctrlPress", ctrlPress);
             handleCompile();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ctrlPress, enterPress]);
 
     const onChange = (action, data) => {
