@@ -11,6 +11,11 @@ import UserInput from "../../../components/CodeEditor/UserInput";
 import { Button } from "@mui/material";
 import defineTheme from "../../../lib/DefineTheme";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { companySelector, userSelector } from "../../../redux/selectors";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDebounce } from "../../../hooks/Performance";
+import LiveCodeService from "../../../services/Code/LiveCodeService";
 
 const javascriptDefault = `// some comment`;
 
@@ -157,6 +162,88 @@ const CodeEditorPage = () => {
     const showErrorToast = (msg) => {
         toast.error(msg || `Something went wrong! Please try again.`);
     };
+
+    const user = useSelector(userSelector);
+    const company = useSelector(companySelector);
+
+    const navigate = useNavigate();
+
+    let codeDebounce = useDebounce(code, 500);
+
+    let { roomCode } = useParams();
+
+    useEffect(() => {
+        if (!user && !company) {
+            return navigate("/");
+        }
+
+        let devChannel, devListener;
+        let companyChannel, companyListener;
+
+        if (user && !company) {
+            if (user.id && window.Echo) {
+                devChannel = window.Echo.channel(`dev-code-${roomCode}`);
+                devListener = (e) => {
+                    console.log(e);
+                    setCode(e.data.body);
+                };
+
+                devChannel.listen("DevSendCodeToCompanyEvent", devListener);
+            }
+        }
+
+        if (!user && company) {
+            if (company.id && window.Echo) {
+                companyChannel = window.Echo.channel(`company-code-${roomCode}`);
+                companyListener = (e) => {
+                    console.log(e);
+                    setCode(e.data.body);
+                };
+
+                devChannel.listen("CompanySendCodeToDevEvent", companyListener);
+            }
+        }
+
+        // Cleanup function
+        return () => {
+            // Unsubscribe or detach the event listener when the component is unmounted
+            if (devChannel && window.Echo) {
+                devChannel.stopListening("DevSendCodeToCompanyEvent", devListener);
+                window.Echo.leaveChannel(`dev-code-${roomCode}`);
+            }
+
+            if (companyChannel && window.Echo) {
+                companyChannel.stopListening("CompanySendCodeToDevEvent", companyListener);
+                window.Echo.leaveChannel(`company-code-${roomCode}`);
+            }
+        };
+    }, [company, user, navigate, roomCode]);
+
+    useEffect(() => {
+        // gọi api để đồng bộ code giữa dev và company tại chỗ này
+        const handleLiveCode = async () => {
+            console.log(codeDebounce);
+            await LiveCodeService.liveCode(codeDebounce, roomCode);
+        };
+
+        handleLiveCode();
+    }, [codeDebounce, roomCode]);
+
+    useEffect(() => {
+        const handleGetRoomData = async () => {
+            try {
+                let response = await LiveCodeService.getRoom(roomCode);
+                if (response.isError) {
+                    return toast.error(response.message);
+                }
+                setCode(response.data.body);
+            } catch (error) {
+                toast.error("Có lỗi xảy ra. Vui lòng thử lại!");
+            }
+        };
+
+        handleGetRoomData();
+    }, [roomCode]);
 
     return (
         <div className="my-5">

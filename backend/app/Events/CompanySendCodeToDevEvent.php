@@ -8,19 +8,19 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class DevReceiveNotificationFromCompanyEvent implements ShouldBroadcastNow
+class CompanySendCodeToDevEvent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $data, $userId;
+    protected $roomCode, $data;
 
     /**
      * Create a new event instance.
      */
-    public function __construct($data, $userId)
+    public function __construct($roomCode, $data)
     {
+        $this->roomCode = $roomCode;
         $this->data = $data;
-        $this->userId = $userId;
     }
 
     /**
@@ -31,7 +31,7 @@ class DevReceiveNotificationFromCompanyEvent implements ShouldBroadcastNow
     public function broadcastOn(): array
     {
         return [
-            new Channel('dev-' . strval($this->userId)),
+            new Channel('dev-code-' . $this->roomCode),
         ];
     }
 }

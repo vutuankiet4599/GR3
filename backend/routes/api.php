@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\V1\Auth\CompanyAuthController;
 use App\Http\Controllers\Api\V1\Dev\ProfileController;
 use App\Http\Controllers\Api\V1\Auth\DevAuthController;
+use App\Http\Controllers\Api\V1\Code\LiveCodeController;
 use App\Http\Controllers\Api\V1\Company\CompanyController;
 use App\Http\Controllers\Api\V1\Dev\ApplicationJobController;
 use App\Http\Controllers\Api\V1\Dev\TagController;
@@ -71,6 +72,13 @@ Route::prefix('/v1')->group(function () {
     
     Route::prefix('/tags')->group(function () {
         Route::get('/', [TagController::class, 'getAll']);
+    });
+
+    Route::prefix('/code')->group(function () {
+        Route::post('/rooms', [LiveCodeController::class, 'createRoom'])->middleware(['auth:companies']);
+        Route::get('/rooms', [LiveCodeController::class, 'companyRoom'])->middleware(['auth:companies']);
+        Route::get('/rooms/{code}', [LiveCodeController::class, 'getRoom']);
+        Route::post('/live', [LiveCodeController::class, 'liveCode']);
     });
 });
 

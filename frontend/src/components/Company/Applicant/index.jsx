@@ -41,7 +41,9 @@ const Applicant = ({ index = 0, application }) => {
 
     return (
         <Accordion className="w-full">
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>Ứng viên số {index}</AccordionSummary>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                Ứng viên số {index} - {application.user?.name}
+            </AccordionSummary>
             <AccordionDetails>
                 <div className="w-full h-full flex">
                     <div className="h-full w-fit p-4 border border-r-0">
