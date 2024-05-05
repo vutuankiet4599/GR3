@@ -17,7 +17,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDebounce } from "../../../hooks/Performance";
 import LiveCodeService from "../../../services/Code/LiveCodeService";
 
-const javascriptDefault = `// some comment`;
+const javascriptDefault = ``;
 
 const CodeEditorPage = () => {
     const [code, setCode] = useState(javascriptDefault);
@@ -168,56 +168,58 @@ const CodeEditorPage = () => {
 
     const navigate = useNavigate();
 
-    let codeDebounce = useDebounce(code, 500);
+    let codeDebounce = useDebounce(code, 1000);
 
     let { roomCode } = useParams();
+
+    useEffect(() => {
+        let companyChannel, companyListener;
+        if (company.id && window.Echo) {
+            console.log("Listen for company");
+            companyChannel = window.Echo.channel(`company-code-${roomCode}`);
+            companyListener = (e) => {
+                console.log("received from dev" + e);
+                setCode(e.data.body);
+            };
+
+            companyChannel.listen("DevSendCodeToCompanyEvent", companyListener);
+        }
+        return () => {
+            // Unsubscribe or detach the event listener when the component is unmounted
+
+            if (companyChannel && window.Echo) {
+                companyChannel.stopListening("DevSendCodeToCompanyEvent", companyListener);
+                window.Echo.leaveChannel(`company-code-${roomCode}`);
+            }
+        };
+    }, [company.id, roomCode]);
+
+    useEffect(() => {
+        let devChannel, devListener;
+        if (user.id && window.Echo) {
+            console.log("Listen for dev");
+
+            devChannel = window.Echo.channel(`dev-code-${roomCode}`);
+            devListener = (e) => {
+                console.log("received from company" + e);
+                setCode(e.data.body);
+            };
+            devChannel.listen("CompanySendCodeToDevEvent", devListener);
+        }
+        return () => {
+            // Unsubscribe or detach the event listener when the component is unmounted
+            if (devChannel && window.Echo) {
+                devChannel.stopListening("CompanySendCodeToDevEvent", devListener);
+                window.Echo.leaveChannel(`dev-code-${roomCode}`);
+            }
+        };
+    }, [roomCode, user.id]);
 
     useEffect(() => {
         if (!user && !company) {
             return navigate("/");
         }
-
-        let devChannel, devListener;
-        let companyChannel, companyListener;
-
-        if (user && !company) {
-            if (user.id && window.Echo) {
-                devChannel = window.Echo.channel(`dev-code-${roomCode}`);
-                devListener = (e) => {
-                    console.log(e);
-                    setCode(e.data.body);
-                };
-
-                devChannel.listen("DevSendCodeToCompanyEvent", devListener);
-            }
-        }
-
-        if (!user && company) {
-            if (company.id && window.Echo) {
-                companyChannel = window.Echo.channel(`company-code-${roomCode}`);
-                companyListener = (e) => {
-                    console.log(e);
-                    setCode(e.data.body);
-                };
-
-                devChannel.listen("CompanySendCodeToDevEvent", companyListener);
-            }
-        }
-
-        // Cleanup function
-        return () => {
-            // Unsubscribe or detach the event listener when the component is unmounted
-            if (devChannel && window.Echo) {
-                devChannel.stopListening("DevSendCodeToCompanyEvent", devListener);
-                window.Echo.leaveChannel(`dev-code-${roomCode}`);
-            }
-
-            if (companyChannel && window.Echo) {
-                companyChannel.stopListening("CompanySendCodeToDevEvent", companyListener);
-                window.Echo.leaveChannel(`company-code-${roomCode}`);
-            }
-        };
-    }, [company, user, navigate, roomCode]);
+    }, [company, user, navigate]);
 
     useEffect(() => {
         // gọi api để đồng bộ code giữa dev và company tại chỗ này
@@ -227,7 +229,8 @@ const CodeEditorPage = () => {
         };
 
         handleLiveCode();
-    }, [codeDebounce, roomCode]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [codeDebounce]);
 
     useEffect(() => {
         const handleGetRoomData = async () => {

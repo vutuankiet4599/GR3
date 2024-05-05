@@ -6,7 +6,7 @@ export const FileUtil = {
                 const blobURL = window.URL.createObjectURL(new Blob([blob]));
                 const aTag = document.createElement("a");
                 aTag.href = blobURL;
-                aTag.setAttribute("download", filename);
+                aTag.setAttribute("download", filename + ".pdf");
                 document.body.appendChild(aTag);
                 aTag.click();
                 aTag.remove();

@@ -81,7 +81,7 @@ class LiveCodeController extends Controller
                 event(new CompanySendCodeToDevEvent($code, ['body' => $body]));
             }
 
-            return $this->success($room);
+            return $this->success([$room, $code, $body]);
         } catch (\Throwable $th) {
             return $this->failure($th->getTrace(), $th->getMessage(), $th->getCode());
         }

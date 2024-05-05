@@ -47,7 +47,7 @@ const Bell = () => {
         <>
             <Button className="w-fit h-fit outline-none border-none" aria-describedby={id} onClick={handleClick}>
                 {notifications.length > 0 ? (
-                    <Badge badgeContent={3} color="error" className="mr-3">
+                    <Badge badgeContent={notifications.length} color="error" className="mr-3">
                         <NotificationsNoneIcon color="primary" />
                     </Badge>
                 ) : (
@@ -69,12 +69,10 @@ const Bell = () => {
                 }}
             >
                 {notifications.map((notification, index) => (
-                    <div key={index} className="px-4 py-2 text-wrap flex items-start justify-start">
-                        <Typography>
-                            Công ty <b>{notification.company}</b> đã{" "}
-                            <b>{notification.isAccepted ? "chấp nhận" : "từ chối"}</b> ứng tuyển của bạn
-                        </Typography>
-                    </div>
+                    <Typography sx={{ p: 2 }} key={index}>
+                        Công ty <b>{notification.company}</b> đã{" "}
+                        <b>{notification.isAccepted ? "chấp nhận" : "từ chối"}</b> ứng tuyển của bạn
+                    </Typography>
                 ))}
             </Popover>
         </>

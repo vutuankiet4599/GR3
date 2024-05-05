@@ -23,6 +23,7 @@ const CompanyJobPage = () => {
                 if (response.isError) {
                     return toast.error(response.message);
                 }
+                console.log(response.data);
                 setJob(response.data);
             } catch (error) {
                 toast.error("Có lỗi xảy ra. Vui lòng thử lại!");

@@ -12,7 +12,7 @@ class CompanySendCodeToDevEvent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    protected $roomCode, $data;
+    public $roomCode, $data;
 
     /**
      * Create a new event instance.

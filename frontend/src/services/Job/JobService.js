@@ -141,8 +141,13 @@ const JobService = {
     companyJob: async (id) => {
         try {
             let response = await authApi.get(`/v1/companies/jobs/${id}`);
+            let data = response.data;
+            data.work = JSON.parse(data.work);
+            data.skill = JSON.parse(data.skill);
+            data.welfare = JSON.parse(data.welfare);
+            data.interview = JSON.parse(data.interview);
             return {
-                data: response.data,
+                data: data,
             };
         } catch (error) {
             return {

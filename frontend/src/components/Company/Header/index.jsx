@@ -24,7 +24,7 @@ import companySlice from "../../../redux/slices/companySlice";
 import { companySelector } from "../../../redux/selectors";
 import CompanyAuthService from "../../../services/Auth/Company/CompanyAuthService";
 
-const pages = [["Ứng viên tiềm năng", "/candidates"]];
+const pages = [["Ứng viên tiềm năng", "/company/candidates"]];
 
 const Header = () => {
     const company = useSelector(companySelector);

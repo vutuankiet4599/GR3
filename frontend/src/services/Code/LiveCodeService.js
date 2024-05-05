@@ -21,6 +21,7 @@ const LiveCodeService = {
                 body: body,
                 code: code,
             });
+            console.log(response);
             return response.data;
         } catch (error) {
             console.log(error);
@@ -46,6 +47,7 @@ const LiveCodeService = {
                 data: response.data,
             };
         } catch (error) {
+            console.log(error);
             return {
                 isError: true,
                 message: "Không thể lấy thông tin phòng. Mời thử lại sau!",

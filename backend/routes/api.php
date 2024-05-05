@@ -68,6 +68,7 @@ Route::prefix('/v1')->group(function () {
             Route::get('/jobs/{id}', [ApplicationJobController::class, 'companyJob']);
             Route::put('/applications/{id}/status', [ApplicationJobController::class, 'changeStatusApplication']);
         });
+        Route::get('/{id}', [CompanyController::class, 'find']);
     });
     
     Route::prefix('/tags')->group(function () {
