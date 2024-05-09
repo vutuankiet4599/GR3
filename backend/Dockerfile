@@ -1,5 +1,5 @@
 # Use the official PHP image as base
-FROM php:8.2-fpm-alpine
+FROM php:8.2-fpm
 
 # Set working directory
 WORKDIR /var/www/html
@@ -36,5 +36,5 @@ RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Expose port 9000 and start php-fpm server
-EXPOSE 8000
+EXPOSE 9000
 CMD ["php-fpm"]

@@ -37,8 +37,6 @@ const CodeEditorPage = () => {
 
     useEffect(() => {
         if (enterPress && ctrlPress) {
-            console.log("enterPress", enterPress);
-            console.log("ctrlPress", ctrlPress);
             handleCompile();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -81,7 +79,6 @@ const CodeEditorPage = () => {
         axios
             .request(options)
             .then(function (response) {
-                console.log("res.data", response.data);
                 const token = response.data.token;
                 checkStatus(token);
             })
@@ -89,14 +86,10 @@ const CodeEditorPage = () => {
                 let error = err.response ? err.response.data : err;
                 // get error status
                 let status = err.response.status;
-                console.log("status", status);
                 if (status === 429) {
                     console.log("too many requests", status);
 
-                    showErrorToast(
-                        `Quota of 100 requests exceeded for the Day! Please read the blog on freeCodeCamp to learn how to setup your own RAPID API Judge0!`,
-                        10000,
-                    );
+                    showErrorToast(`Quá quota!`, 10000);
                 }
                 setProcessing(false);
                 console.log("catch block...", error);
@@ -130,14 +123,12 @@ const CodeEditorPage = () => {
             } else {
                 setProcessing(false);
                 setOutputDetails(response.data);
-                showSuccessToast(`Compiled Successfully!`);
-                console.log("response.data", response.data);
+                showSuccessToast(`Dịch thành công!`);
                 return;
             }
         } catch (err) {
-            console.log("err", err);
             setProcessing(false);
-            showErrorToast();
+            showErrorToast(`Dịch thất bại!`);
         }
     };
 
@@ -175,10 +166,8 @@ const CodeEditorPage = () => {
     useEffect(() => {
         let companyChannel, companyListener;
         if (company.id && window.Echo) {
-            console.log("Listen for company");
             companyChannel = window.Echo.channel(`company-code-${roomCode}`);
             companyListener = (e) => {
-                console.log("received from dev" + e);
                 setCode(e.data.body);
             };
 
@@ -197,11 +186,8 @@ const CodeEditorPage = () => {
     useEffect(() => {
         let devChannel, devListener;
         if (user.id && window.Echo) {
-            console.log("Listen for dev");
-
             devChannel = window.Echo.channel(`dev-code-${roomCode}`);
             devListener = (e) => {
-                console.log("received from company" + e);
                 setCode(e.data.body);
             };
             devChannel.listen("CompanySendCodeToDevEvent", devListener);
@@ -217,7 +203,7 @@ const CodeEditorPage = () => {
 
     useEffect(() => {
         if (!user && !company) {
-            return navigate("/");
+            return navigate("/login");
         }
     }, [company, user, navigate]);
 

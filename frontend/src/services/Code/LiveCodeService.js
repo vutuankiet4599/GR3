@@ -21,7 +21,6 @@ const LiveCodeService = {
                 body: body,
                 code: code,
             });
-            console.log(response);
             return response.data;
         } catch (error) {
             console.log(error);

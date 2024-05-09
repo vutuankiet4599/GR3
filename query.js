@@ -32,3 +32,36 @@ function getArrayDataOfJob() {
         interview,
     };
 }
+
+function getArrayDataOfJobWithDescription() {
+    let firstChild = document.querySelector("#JobDescription").firstChild;
+    let secondChild = firstChild.nextSibling;
+    let thirdChild = secondChild.nextSibling;
+    let fourthChild = thirdChild.nextSibling;
+
+    let description = firstChild.querySelectorAll("p");
+    let work = secondChild.querySelectorAll("li");
+    let skill = thirdChild.querySelectorAll("li");
+    let welfare = fourthChild.querySelectorAll("li");
+
+    description = [...description].map((item) => item.innerText).join(". ");
+    work = [...work].map((item) => item.innerText);
+    skill = [...skill].map((item) => item.innerText);
+    welfare = [...welfare].map((item) => item.innerText);
+
+    let interview = document.querySelectorAll("section.sticky.flex.w-full li");
+    interview = [...interview].map((item) => item.innerText);
+
+    work = JSON.stringify(work);
+    skill = JSON.stringify(skill);
+    welfare = JSON.stringify(welfare);
+    interview = JSON.stringify(interview);
+
+    return {
+        description,
+        work,
+        skill,
+        welfare,
+        interview,
+    };
+}
