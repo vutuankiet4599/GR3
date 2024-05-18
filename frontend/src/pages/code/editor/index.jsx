@@ -16,6 +16,7 @@ import { companySelector, userSelector } from "../../../redux/selectors";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDebounce } from "../../../hooks/Performance";
 import LiveCodeService from "../../../services/Code/LiveCodeService";
+import { io } from "socket.io-client";
 
 const javascriptDefault = ``;
 
@@ -26,6 +27,7 @@ const CodeEditorPage = () => {
     const [processing, setProcessing] = useState(null);
     const [theme, setTheme] = useState("oceanic-next");
     const [language, setLanguage] = useState(languageOptions[0]);
+    const [socket, setSocket] = useState(null);
 
     const enterPress = useKeyPress("Enter");
     const ctrlPress = useKeyPress("Control");
@@ -164,42 +166,26 @@ const CodeEditorPage = () => {
     let { roomCode } = useParams();
 
     useEffect(() => {
-        let companyChannel, companyListener;
-        if (company.id && window.Echo) {
-            companyChannel = window.Echo.channel(`company-code-${roomCode}`);
-            companyListener = (e) => {
-                setCode(e.data.body);
-            };
+        const socket = io(
+            `${import.meta.env.VITE_LIVESERVER_SCHEME}://${import.meta.env.VITE_LIVESERVER_HOST}:${import.meta.env.VITE_LIVESERVER_PORT}`,
+            {
+                query: {
+                    roomCode: roomCode,
+                },
+            },
+        );
+        socket.on(`RECEIVE-${roomCode}`, (data) => {
+            console.log("Data received: " + JSON.stringify(data));
+            setCode(data.value);
+        });
+        setSocket(socket);
 
-            companyChannel.listen("DevSendCodeToCompanyEvent", companyListener);
-        }
         return () => {
-            // Unsubscribe or detach the event listener when the component is unmounted
-
-            if (companyChannel && window.Echo) {
-                companyChannel.stopListening("DevSendCodeToCompanyEvent", companyListener);
-                window.Echo.leaveChannel(`company-code-${roomCode}`);
-            }
+            setSocket(null);
+            socket.off(`RECEIVE-${roomCode}`);
+            socket.off(`SEND-${roomCode}`);
         };
-    }, [company.id, roomCode]);
-
-    useEffect(() => {
-        let devChannel, devListener;
-        if (user.id && window.Echo) {
-            devChannel = window.Echo.channel(`dev-code-${roomCode}`);
-            devListener = (e) => {
-                setCode(e.data.body);
-            };
-            devChannel.listen("CompanySendCodeToDevEvent", devListener);
-        }
-        return () => {
-            // Unsubscribe or detach the event listener when the component is unmounted
-            if (devChannel && window.Echo) {
-                devChannel.stopListening("CompanySendCodeToDevEvent", devListener);
-                window.Echo.leaveChannel(`dev-code-${roomCode}`);
-            }
-        };
-    }, [roomCode, user.id]);
+    }, [roomCode]);
 
     useEffect(() => {
         if (!user && !company) {
@@ -209,9 +195,14 @@ const CodeEditorPage = () => {
 
     useEffect(() => {
         // gọi api để đồng bộ code giữa dev và company tại chỗ này
-        const handleLiveCode = async () => {
-            console.log(codeDebounce);
-            await LiveCodeService.liveCode(codeDebounce, roomCode);
+        const handleLiveCode = () => {
+            // console.log(codeDebounce);
+            // await LiveCodeService.liveCode(codeDebounce, roomCode);
+            if (socket !== null && roomCode) {
+                socket.emit(`SEND-${roomCode}`, {
+                    value: codeDebounce,
+                });
+            }
         };
 
         handleLiveCode();

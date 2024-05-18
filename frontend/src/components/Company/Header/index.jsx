@@ -66,7 +66,7 @@ const Header = () => {
             <CssBaseline />
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <Link to="/">
+                    <Link to="/company">
                         <Box
                             component="img"
                             src={logoImage}
@@ -114,7 +114,7 @@ const Header = () => {
                             ))}
                         </Menu>
                     </Box>
-                    <Link to="/">
+                    <Link to="/company">
                         <Box
                             component="img"
                             src={logoImage}

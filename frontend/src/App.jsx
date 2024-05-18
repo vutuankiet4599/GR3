@@ -15,15 +15,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
-    // const dispatch = useDispatch();
-
-    // const user = useSelector(userSelector);
     const token = useSelector(tokenSelector);
-
-    // const handleClick = () => {
-    //     dispatch(userSlice.actions.updateUserInfo({ name: "kiet" }));
-    //     dispatch(tokenSlice.actions.updateToken("Token"));
-    // };
 
     useEffect(() => {
         window.Pusher = Pusher;
@@ -39,7 +31,7 @@ function App() {
             wssPort: import.meta.env.VITE_PUSHER_PORT ?? 443,
             forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? "https") === "https",
             enabledTransports: ["ws", "wss"],
-            authEndpoint: `${import.meta.env.VITE_BACKEND_URL}/broadcasting/auth`,
+            authEndpoint: `${import.meta.env.VITE_BACKEND_SCHEME}://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT}/api/broadcasting/auth`,
             auth: {
                 headers: {
                     Authorization: "Bearer " + token,

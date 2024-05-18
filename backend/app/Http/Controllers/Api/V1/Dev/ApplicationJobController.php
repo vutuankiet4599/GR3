@@ -217,4 +217,23 @@ class ApplicationJobController extends Controller
             return $this->failure($th->getTrace(), $th->getMessage(), $th->getCode());
         }
     }
+
+    public function changeStatusJob(Request $request, $id)
+    {
+        try {
+            $status = $request->input('status', '');
+            if ($status == '' || ($status != 'opening' && $status != 'closed')) {
+                return $this->failure([], 'Invalid status', '');
+            }
+            
+            $response = $this->repository->update($id, ['status' => $status]);
+            if (!$response) {
+                return $this->failure([], 'Update failed', '');
+            }
+
+            return $this->success($response, 'Updated successfully', '');
+        } catch (\Throwable $th) {
+            return $this->failure($th->getTrace(), $th->getMessage(), $th->getCode());
+        }
+    }
 }

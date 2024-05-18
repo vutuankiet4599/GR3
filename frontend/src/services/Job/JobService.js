@@ -166,7 +166,22 @@ const JobService = {
                 data: response.data,
             };
         } catch (error) {
-            console.log(error);
+            return {
+                isError: true,
+                message: "Không thể xử lý được. Mời thử lại sau!",
+            };
+        }
+    },
+
+    updateJobStatus: async (id, status) => {
+        try {
+            let response = await authApi.put(`/v1/companies/jobs/${id}/status`, {
+                status: status,
+            });
+            return {
+                data: response.data,
+            };
+        } catch (error) {
             return {
                 isError: true,
                 message: "Không thể xử lý được. Mời thử lại sau!",
