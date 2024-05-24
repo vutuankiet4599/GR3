@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\Code\LiveCodeController;
 use App\Http\Controllers\Api\V1\Company\CompanyController;
 use App\Http\Controllers\Api\V1\Dev\ApplicationJobController;
 use App\Http\Controllers\Api\V1\Dev\TagController;
+use App\Http\Controllers\Api\V1\Quiz\QuizController;
 use App\Http\Controllers\TestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -52,6 +53,7 @@ Route::prefix('/v1')->group(function () {
                 Route::get('/applications', [ProfileController::class, 'getCurrentUserApplications']);
                 Route::put('/tags', [ProfileController::class, 'updateTags']);
             });
+            Route::post('/quizzes/{id}', [QuizController::class, 'answerQuiz']);
         });
         Route::get('/jobs/hot', [ApplicationJobController::class, 'hotJob']);
         Route::get('/jobs/search', [ApplicationJobController::class, 'search']);
@@ -68,6 +70,11 @@ Route::prefix('/v1')->group(function () {
             Route::get('/jobs/{id}', [ApplicationJobController::class, 'companyJob']);
             Route::put('/jobs/{id}/status', [ApplicationJobController::class, 'changeStatusJob']);
             Route::put('/applications/{id}/status', [ApplicationJobController::class, 'changeStatusApplication']);
+
+            Route::post('/user/contact', [CompanyController::class, 'sendContactMailToUser']);
+
+            Route::post('/quizzes', [QuizController::class, 'createQuiz']);
+            Route::get('/quizzes', [QuizController::class, 'companyQuizzes']);
         });
         Route::get('/{id}', [CompanyController::class, 'find']);
     });

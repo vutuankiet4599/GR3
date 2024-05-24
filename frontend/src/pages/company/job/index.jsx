@@ -52,7 +52,9 @@ const CompanyJobPage = () => {
     return (
         <Container maxWidth="xl" className="p-4 px-16">
             <Link to="/company/dashboard">
-                <Button startIcon={<ArrowBackIcon />}>Trở về bảng điều khiển</Button>
+                <Button startIcon={<ArrowBackIcon />} variant="contained">
+                    Trở về bảng điều khiển
+                </Button>
             </Link>
             <TabContext value={value}>
                 <TabList onChange={handleChange} className="flex items-center justify-center">
@@ -129,6 +131,7 @@ const CompanyJobPage = () => {
                         </div>
                         <div className="flex gap-2 justify-start items-center">
                             <Button
+                                variant="contained"
                                 color="error"
                                 disabled={jobData.status == "closed"}
                                 onClick={() => handleUpdateStatus("closed")}
@@ -136,6 +139,7 @@ const CompanyJobPage = () => {
                                 Đóng công việc
                             </Button>
                             <Button
+                                variant="contained"
                                 color="success"
                                 disabled={jobData.status == "opening"}
                                 onClick={() => handleUpdateStatus("opening")}

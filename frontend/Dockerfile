@@ -1,7 +1,17 @@
 FROM node:20-alpine
+
+# Set the working directory
 WORKDIR /app/frontend
-COPY package.json .
-COPY . .
+
+# Copy package.json and package-lock.json
+# COPY package.json package-lock.json ./
+COPY package.json ./
+
+# Install dependencies
 RUN npm install
 
-CMD npm run build
+# Copy the rest of the application
+COPY . .
+
+# Build the application
+CMD ["npm", "run", "build"]

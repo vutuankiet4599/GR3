@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\V1\Company;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Company\User\ContactRequest;
+use App\Jobs\SendContactMail;
 use App\Models\Company;
 use App\Models\Tag;
 use App\Models\User;
@@ -38,7 +40,7 @@ class CompanyController extends Controller
     {
         try {
             $company = $this->repository->find($id);
-            $company->load('applicationJobs');
+            $company->loadCount('applicationJobs')->load('quizzes');
             return $this->success($company);
         } catch (\Throwable $th) {
             return $this->failure($th->getTrace(), $th->getMessage(), $th->getCode(), 500);
@@ -65,6 +67,28 @@ class CompanyController extends Controller
                 'totalPages' => $users->toArray()['last_page'],
 
             ]);
+        } catch (\Throwable $th) {
+            return $this->failure($th->getTrace(), $th->getMessage(), $th->getCode(), 500);
+        }
+    }
+
+    public function sendContactMailToUser(ContactRequest $request)
+    {
+        try {
+            $data = $request->validated();
+            $company = $request->user('companies');
+            $user = User::find($data['user_id']);
+
+            $data = [
+                'username' => $user['name'],
+                'company_name' => $company['name'],
+                'user_email' => $user['email'],
+                'body' => $data['body'],
+            ];
+
+            SendContactMail::dispatch($data)->afterCommit();
+
+            return $this->success([], 'Send contact mail done');
         } catch (\Throwable $th) {
             return $this->failure($th->getTrace(), $th->getMessage(), $th->getCode(), 500);
         }

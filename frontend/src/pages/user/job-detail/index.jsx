@@ -6,7 +6,7 @@ import PaymentsIcon from "@mui/icons-material/Payments";
 import "./style.css";
 import { useEffect, useState } from "react";
 import job from "../../../constants/job";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import JobService from "../../../services/Job/JobService";
 import { useSelector } from "react-redux";
@@ -29,6 +29,7 @@ const JobDetailPage = () => {
             name: "",
             address: "",
             logo: "",
+            id: 0,
         },
         work: [],
         skill: [],
@@ -86,17 +87,21 @@ const JobDetailPage = () => {
             <Grid container className="px-16" spacing={2}>
                 <Grid item xs={8} className="flex flex-col gap-3">
                     <div className="w-full bg-white flex items-center justify-center rounded px-4 h-fit">
-                        <img src={jobData.company.logo} className="w-32 h-32" />
+                        <Link to={`/companies/${jobData.company.id}`}>
+                            <img src={jobData.company.logo} className="w-32 h-32" />
+                        </Link>
                         <div className="flex flex-col gap-1 grow px-5 py-4">
                             <Typography className="text-wrap text-2xl font-bold text-black" component="p">
                                 {jobData.name}
                             </Typography>
-                            <Typography
-                                className="text-wrap my-1 line-clamp-1 text-base font-bold text-gray-500"
-                                component="p"
-                            >
-                                {jobData.company.name}
-                            </Typography>
+                            <Link to={`/companies/${jobData.company.id}`}>
+                                <Typography
+                                    className="text-wrap my-1 line-clamp-1 text-base font-bold text-gray-500"
+                                    component="p"
+                                >
+                                    {jobData.company.name}
+                                </Typography>
+                            </Link>
                             <Typography className="text-wrap">
                                 <PlaceIcon color="disabled" />
                                 &nbsp;{jobData.company.address}
@@ -131,7 +136,7 @@ const JobDetailPage = () => {
                             ))}
                         </ul>
                         <Divider />
-                        <Typography className="font-bold">Phúc lợi cho bạnc</Typography>
+                        <Typography className="font-bold">Phúc lợi cho bạn</Typography>
                         <ul className="custom-ul">
                             {jobData.welfare.map((value, index) => (
                                 <li key={index}>

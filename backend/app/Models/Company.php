@@ -53,4 +53,14 @@ class Company extends Authenticatable
     public function tags(): HasManyThrough {
         return $this->hasManyThrough(Tag::class, ApplicationJob::class);
     }
+
+    public function quizzes(): HasMany
+    {
+        return $this->hasMany(Quiz::class);
+    }
+
+    public function questions(): HasManyThrough
+    {
+        return $this->hasManyThrough(Question::class, Quiz::class);
+    }
 }

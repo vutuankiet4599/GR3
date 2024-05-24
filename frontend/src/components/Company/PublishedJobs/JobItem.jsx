@@ -5,18 +5,18 @@ import PropTypes from "prop-types";
 
 const JobItem = ({ job }) => {
     return (
-        <ListItem
-            secondaryAction={
-                <Link to={`/company/jobs/${job.id}`}>
+        <Link to={`/company/jobs/${job.id}`}>
+            <ListItem
+                secondaryAction={
                     <IconButton>
                         <OpenInNewIcon color="primary" />
                     </IconButton>
-                </Link>
-            }
-            className="border px-8 py-2 hover:bg-slate-50 cursor-pointer"
-        >
-            <ListItemText primary={job.name} />
-        </ListItem>
+                }
+                className="border px-8 py-2 hover:bg-slate-50 cursor-pointer"
+            >
+                <ListItemText primary={job.name} />
+            </ListItem>
+        </Link>
     );
 };
 

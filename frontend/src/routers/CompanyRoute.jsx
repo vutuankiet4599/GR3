@@ -2,7 +2,8 @@ import CompanyLayout from "../pages/company/layout";
 import HomePage from "../pages/company/home";
 import DashboardPage from "../pages/company/dashboard";
 import CompanyJobPage from "../pages/company/job";
-import CandidatePage from "../pages/company/candidate";
+import QuizPage from "../pages/company/quiz";
+import QuizDetailPage from "../pages/company/quiz/quiz-detail";
 
 const CompanyRouter = {
     path: "/company",
@@ -21,8 +22,12 @@ const CompanyRouter = {
             element: <CompanyJobPage />,
         },
         {
-            path: "/company/candidates",
-            element: <CandidatePage />,
+            path: "/company/quizzes",
+            element: <QuizPage />,
+        },
+        {
+            path: "/company/quizzes/:id",
+            element: <QuizDetailPage />,
         },
     ],
 };

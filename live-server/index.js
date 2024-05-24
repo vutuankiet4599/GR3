@@ -43,6 +43,12 @@ io.on("connection", (socket) => {
     });
 });
 
+app.get("/", (req, res) => {
+    res.json({
+        ok: 1,
+    });
+});
+
 server.listen(PORT, () => {
     console.log("Server is listening on port", PORT);
 });

@@ -8,12 +8,13 @@ services:
         restart: always
         environment:
             - CHOKIDAR_USEPOLLING=true
-            - VITE_BACKEND_HOST=backend
+            - VITE_BACKEND_HOST=nginx
             - VITE_BACKEND_PORT=81
             - VITE_LIVESERVER_HOST=live-server
             - VITE_APP_URL=http://localhost
-        volumes:
-            - ./frontend:/app/frontend
+        # volumes:
+        #     - ./frontend:/app/frontend
+        #     - /app/frontend/node_modules/
 
     backend:
         build:
@@ -26,21 +27,23 @@ services:
             - DB_HOST=database
             - ELASTICSEARCH_HOST=elasticsearch
         restart: always
-        ports:
-            - "8000:8000"
-        volumes:
-            - ./backend:/var/www/html
+        # volumes:
+        #     - ./backend:/var/www/html
 
     live-server:
         build:
             context: ./live-server
             dockerfile: Dockerfile
+        restart: always
         depends_on:
             - database
         environment:
             - DB_HOST=database
-        volumes:
-            - ./live-server:/app/live-server
+        ports:
+            - "3000:3000"
+        # volumes:
+        #     - ./live-server:/app/live-server
+        #     - /app/live-server/node_modules/
 
     database:
         image: mysql
@@ -57,11 +60,12 @@ services:
 
     nginx:
         image: nginx:alpine
+        restart: always
         depends_on:
             - backend
             - frontend
         ports:
-            - "8000:81"
+            - "81:81"
             - "80:80"
         volumes:
             - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
@@ -70,6 +74,7 @@ services:
 
     elasticsearch:
         image: docker.elastic.co/elasticsearch/elasticsearch:7.11.0
+        restart: always
         environment:
             - xpack.security.enabled=false
             - "discovery.type=single-node"
@@ -77,13 +82,3 @@ services:
             - 9200:9200
         volumes:
             - ./elasticsearch_data:/usr/share/elasticsearch/data
-
-volumes:
-    database:
-        driver: local
-    elasticsearch_data:
-        driver: local
-
-networks:
-    default:
-        name: gr3-app

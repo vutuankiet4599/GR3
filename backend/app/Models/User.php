@@ -54,4 +54,9 @@ class User extends Authenticatable
     public function jobs(): BelongsToMany {
         return $this->belongsToMany(ApplicationJob::class, 'applications');
     }
+
+    public function quizzes(): BelongsToMany
+    {
+        return $this->belongsToMany(Quiz::class, 'user_quiz')->withPivot('score');
+    }
 }

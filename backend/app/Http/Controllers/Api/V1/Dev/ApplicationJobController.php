@@ -134,7 +134,9 @@ class ApplicationJobController extends Controller
                     ->withCount(['tags' => function($query) use ($userTagsIds) {
                         $query->whereIn('tags.id', $userTagsIds);
                     }])
+                    ->withCount('applications')
                     ->orderBy('tags_count', 'desc')
+                    ->orderBy('applications_count', 'desc')
                     ->take(10)
                     ->get();
             }
@@ -173,7 +175,7 @@ class ApplicationJobController extends Controller
     {
         try {
             $companyId = $request->user('companies')->id;
-            $jobs = ApplicationJob::where('company_id', $companyId)->get();
+            $jobs = ApplicationJob::withoutGlobalScopes()->where('company_id', $companyId)->get();
             return $this->success($jobs);
         } catch (\Throwable $th) {
             return $this->failure($th->getTrace(), $th->getMessage(), $th->getCode());

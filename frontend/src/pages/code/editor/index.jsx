@@ -251,7 +251,7 @@ const CodeEditorPage = () => {
                             color="info"
                             className="w-[50%]"
                         >
-                            {processing ? "Processing..." : "Compile and Execute"}
+                            {processing ? "Đang xử lý..." : "Dịch và thực hiện"}
                         </Button>
                     </div>
                     {outputDetails && <OutputDetails outputDetails={outputDetails} />}

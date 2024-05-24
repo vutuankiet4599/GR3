@@ -1,6 +1,7 @@
 import LoginPage from "../pages/auth/login";
 import RegisterPage from "../pages/auth/register";
 import CodeEditorPage from "../pages/code/editor";
+import CompanyDetailPage from "../pages/user/company-detail";
 import HomePage from "../pages/user/home";
 import JobDetailPage from "../pages/user/job-detail";
 import JobSearchPage from "../pages/user/job-search";
@@ -43,6 +44,10 @@ const UserRouter = {
         {
             path: "/code/:roomCode",
             element: <CodeEditorPage />,
+        },
+        {
+            path: "/companies/:id",
+            element: <CompanyDetailPage />,
         },
     ],
 };
