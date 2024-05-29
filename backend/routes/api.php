@@ -60,6 +60,9 @@ Route::prefix('/v1')->group(function () {
         Route::post('/jobs/apply', [ApplicationJobController::class, 'apply']);
         Route::get('/jobs/best-fit', [ApplicationJobController::class, 'bestFitJobs']);
         Route::get('/jobs/{id}', [ApplicationJobController::class, 'find']);
+
+        Route::get('/quizzes/{id}', [QuizController::class, 'getQuiz']);
+        Route::post('/quizzes/{id}', [QuizController::class, 'answerQuiz'])->middleware('auth:users');
     });
 
     Route::prefix('/companies')->group(function () {

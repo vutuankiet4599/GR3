@@ -38,7 +38,9 @@ const DevAuthService = {
             formData.append("password_confirmation", data.passwordConfirmation);
             formData.append("name", data.name);
             formData.append("phone", data.phone);
-            formData.append("image", data.image);
+            if (data.image) {
+                formData.append("image", data.image);
+            }
             await publicApi.post("/v1/auth/devs/register", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",

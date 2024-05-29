@@ -14,6 +14,7 @@ use App\Repositories\ApplicationJob\ApplicationJobRepository;
 use App\Traits\ResponseTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ApplicationJobController extends Controller
 {
@@ -185,7 +186,7 @@ class ApplicationJobController extends Controller
     public function companyJob(Request $request, $id)
     {
         try {
-            $job = $this->repository->find($id);
+            $job = ApplicationJob::withoutGlobalScopes()->find($id);
             if (!$job) {
                 return $this->failure([], 'No record found', '', 404);
             }
@@ -224,8 +225,8 @@ class ApplicationJobController extends Controller
     {
         try {
             $status = $request->input('status', '');
-            if ($status == '' || ($status != 'opening' && $status != 'closed')) {
-                return $this->failure([], 'Invalid status', '');
+            if (!in_array($status, ['opening', 'closed'])) {
+                return $this->failure([], 'Invalid status', 400);
             }
             
             $response = $this->repository->update($id, ['status' => $status]);
@@ -233,7 +234,7 @@ class ApplicationJobController extends Controller
                 return $this->failure([], 'Update failed', '');
             }
 
-            return $this->success($response, 'Updated successfully', '');
+            return $this->success($response, 'Updated successfully', 200);
         } catch (\Throwable $th) {
             return $this->failure($th->getTrace(), $th->getMessage(), $th->getCode());
         }

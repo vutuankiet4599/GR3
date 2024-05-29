@@ -22,8 +22,10 @@ const CompanyService = {
     getCompany: async (id) => {
         try {
             let response = await publicApi.get(`/v1/companies/${id}`);
+            let data = response.data;
+            data.treatment = JSON.parse(data.treatment);
             return {
-                data: response.data,
+                data: data,
             };
         } catch (error) {
             return {

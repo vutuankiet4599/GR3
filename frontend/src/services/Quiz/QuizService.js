@@ -1,4 +1,5 @@
 import authApi from "../../api/authApi";
+import publicApi from "../../api/publicApi";
 
 const QuizService = {
     create: async (data) => {
@@ -39,6 +40,21 @@ const QuizService = {
             return {
                 isError: true,
                 message: "Không thể lấy được bài quizzes. Vui lòng thử lại!",
+            };
+        }
+    },
+
+    getQuiz: async (id) => {
+        try {
+            let response = await publicApi.get(`/v1/devs/quizzes/${id}`);
+
+            return {
+                data: response.data,
+            };
+        } catch (error) {
+            return {
+                isError: true,
+                message: "Không thể lấy được bài quizz. Vui lòng thử lại!",
             };
         }
     },

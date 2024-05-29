@@ -46,9 +46,9 @@ const QuizItem = ({ index = 1, title, questions, users }) => {
                             {user.name} - {user.email}:{" "}
                             <span
                                 className={
-                                    user.pivot.score > 80
+                                    user.pivot.score > questions.length * 10 * 0.8
                                         ? "text-green-500"
-                                        : user.pivot.score < 40
+                                        : user.pivot.score < questions.length * 10 * 0.4
                                           ? "text-red-500"
                                           : "text-yellow-500"
                                 }

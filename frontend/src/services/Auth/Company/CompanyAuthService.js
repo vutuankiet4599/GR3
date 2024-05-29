@@ -40,7 +40,9 @@ const CompanyAuthService = {
             formData.append("name", data.name);
             formData.append("address", data.address);
             formData.append("description", data.description);
-            formData.append("logo", data.logo);
+            if (data.logo) {
+                formData.append("logo", data.logo);
+            }
             formData.append("size", data.size);
             formData.append("nationality", data.nationality);
             formData.append("business", data.business);

@@ -12,7 +12,7 @@ import { Button } from "@mui/material";
 import defineTheme from "../../../lib/DefineTheme";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { companySelector, userSelector } from "../../../redux/selectors";
+import { tokenSelector } from "../../../redux/selectors";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDebounce } from "../../../hooks/Performance";
 import LiveCodeService from "../../../services/Code/LiveCodeService";
@@ -156,8 +156,7 @@ const CodeEditorPage = () => {
         toast.error(msg || `Something went wrong! Please try again.`);
     };
 
-    const user = useSelector(userSelector);
-    const company = useSelector(companySelector);
+    const token = useSelector(tokenSelector);
 
     const navigate = useNavigate();
 
@@ -188,10 +187,10 @@ const CodeEditorPage = () => {
     }, [roomCode]);
 
     useEffect(() => {
-        if (!user && !company) {
+        if (!token) {
             return navigate("/login");
         }
-    }, [company, user, navigate]);
+    }, [token, navigate]);
 
     useEffect(() => {
         // gọi api để đồng bộ code giữa dev và company tại chỗ này

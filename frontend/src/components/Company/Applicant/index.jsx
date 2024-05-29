@@ -142,7 +142,7 @@ const Applicant = ({ index = 0, application }) => {
                     </Button>
                 </AccordionActions>
             </Accordion>
-            <Dialog open={isOpenDialog} onClose={() => setIsOpenDialog(false)}>
+            <Dialog open={isOpenDialog} onClose={() => setIsOpenDialog(false)} fullWidth>
                 <DialogTitle>Thông tin muốn gửi</DialogTitle>
                 <DialogContent>
                     <TextField

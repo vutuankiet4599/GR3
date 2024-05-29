@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Size from "../../../constants/job/size";
 import CompanyService from "../../../services/Company/CompanyService";
@@ -7,6 +7,9 @@ import { Button, Container, Divider, Grid, Typography } from "@mui/material";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import FolderIcon from "@mui/icons-material/Folder";
 import ShareIcon from "@mui/icons-material/Share";
+import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
+import { useSelector } from "react-redux";
+import { userSelector } from "../../../redux/selectors";
 
 const CompanyDetailPage = () => {
     const [company, setCompany] = useState({
@@ -23,6 +26,8 @@ const CompanyDetailPage = () => {
         quizzes: [],
         application_jobs_count: 0,
     });
+
+    let user = useSelector(userSelector);
 
     const { id } = useParams();
     useEffect(() => {
@@ -92,11 +97,53 @@ const CompanyDetailPage = () => {
                         </ul>
                     </div>
                 </Grid>
-                <Grid item xs={4} className="flex flex-col gap-3"></Grid>
+                <Grid item xs={4} className="flex flex-col gap-3">
+                    <div className="flex items-center justify-start px-4 py-3 bg-white -mb-2">
+                        <Typography className="font-bold text-lg">Thông tin chung</Typography>
+                    </div>
+                    <div className="flex flex-col gap-2 rounded bg-white">
+                        <Typography className="px-4 font-bold -mb-2">Lĩnh vực</Typography>
+                        <Typography className="px-4">{company.business}</Typography>
+
+                        <Typography className="px-4 font-bold -mb-2">Quy mô công ty</Typography>
+                        <Typography className="px-4">{Size[company.size]}</Typography>
+
+                        <Typography className="px-4 font-bold -mb-2">Quốc tịch công ty</Typography>
+                        <Typography className="px-4">{company.nationality}</Typography>
+                    </div>
+
+                    <div className="flex items-center justify-start px-4 py-3 bg-white -mb-2">
+                        <Typography className="font-bold text-lg">Thông tin liên hệ</Typography>
+                    </div>
+                    <div className="flex flex-col gap-2 rounded bg-white">
+                        <Typography className="px-4 font-bold -mb-2">Website</Typography>
+                        <a href={company.website} target="_blank" rel="noreferrer">
+                            <Typography className="px-4">{company.website}</Typography>
+                        </a>
+
+                        <Typography className="px-4 font-bold -mb-2">Địa chỉ</Typography>
+                        <Typography className="px-4">
+                            <PlaceOutlinedIcon /> {company.address}
+                        </Typography>
+                    </div>
+                </Grid>
             </Grid>
-            <Grid container className="px-16" spacing={2}>
-                <Grid item xs={8} className="flex flex-col gap-3"></Grid>
-            </Grid>
+            {user && (
+                <Grid container className="px-16" spacing={2}>
+                    <Grid item xs={8} className="flex flex-col gap-3 bg-white px-4 py-3">
+                        <Typography className="font-bold flex items-center justify-start py-2">
+                            Các bài quiz của công ty
+                        </Typography>
+                        {company.quizzes.map((quiz, index) => (
+                            <Link key={index} to={`/quizzes/${quiz.id}`}>
+                                <Typography className="border px-3 py-2 text-wrap hover:shadow-md">
+                                    Bài quiz số {index + 1}: {quiz.title}
+                                </Typography>
+                            </Link>
+                        ))}
+                    </Grid>
+                </Grid>
+            )}
         </Container>
     );
 };

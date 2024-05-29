@@ -40,7 +40,7 @@ class MailCompanyContactToDev extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.company-contact-mail',
+            markdown: 'mail.company-contact-mail',
             with: [
                 'data' => $this->data
             ]

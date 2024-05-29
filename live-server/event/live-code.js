@@ -6,9 +6,10 @@ const liveCodeHandler = {
             console.log(
                 "Data received in room " + roomCode + ": " + data.value
             );
-            poolConnection.query(
-                `UPDATE TABLE rooms SET body = '${data.value}' WHERE code = '${roomCode}'`
-            );
+            poolConnection.query("UPDATE rooms SET body = ? WHERE code = ?", [
+                data.value,
+                roomCode,
+            ]);
             socket.broadcast.to(roomCode).emit(`RECEIVE-${roomCode}`, data);
         });
     },

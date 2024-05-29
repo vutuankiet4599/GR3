@@ -72,6 +72,11 @@ class QuizController extends Controller
             if (!$hasApplied) {
                 return $this->failure([], 'You are not allowed to do this quiz.', 403, 403);
             }
+
+            $user->quizzes()->detach($quiz->id);
+            $user->quizzes()->attach($quiz->id, ['score' => $data['score']]);
+
+            return $this->success([], 'Answer done');
         } catch (\Throwable $th) {
             return $this->failure($th->getTrace(), $th->getMessage(), $th->getCode());
         }

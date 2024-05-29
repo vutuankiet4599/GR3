@@ -7,6 +7,7 @@ import JobDetailPage from "../pages/user/job-detail";
 import JobSearchPage from "../pages/user/job-search";
 import UserLayout from "../pages/user/layout";
 import ProfilePage from "../pages/user/profile";
+import QuizPage from "../pages/user/quiz";
 import ProtectedRoute from "./ProtectedRoute";
 
 const UserRouter = {
@@ -48,6 +49,14 @@ const UserRouter = {
         {
             path: "/companies/:id",
             element: <CompanyDetailPage />,
+        },
+        {
+            path: "/quizzes/:id",
+            element: (
+                <ProtectedRoute>
+                    <QuizPage />
+                </ProtectedRoute>
+            ),
         },
     ],
 };
