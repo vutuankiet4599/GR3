@@ -19,7 +19,7 @@ const QuizStepper = ({ questions, handleUpdateScore, handleFinishQuiz }) => {
             setShuffledAnswers(shuffleArray(answers));
         }
 
-        if (activeStep === questions.length) {
+        if (activeStep === questions.length && activeStep !== 0) {
             handleFinishQuiz();
         }
     }, [questions, activeStep, handleFinishQuiz]);
@@ -62,9 +62,7 @@ const QuizStepper = ({ questions, handleUpdateScore, handleFinishQuiz }) => {
             </Stepper>
             <Divider />
             {activeStep === questions.length ? (
-                <>
-                    <Typography sx={{ mt: 2, mb: 1 }}>Bạn đã hoàn thành bài quiz</Typography>
-                </>
+                <>{activeStep !== 0 && <Typography sx={{ mt: 2, mb: 1 }}>Bạn đã hoàn thành bài quiz</Typography>}</>
             ) : (
                 <>
                     <div className="w-full flex flex-col gap-2">

@@ -101,7 +101,7 @@ const CompanyDetailPage = () => {
                     <div className="flex items-center justify-start px-4 py-3 bg-white -mb-2">
                         <Typography className="font-bold text-lg">Thông tin chung</Typography>
                     </div>
-                    <div className="flex flex-col gap-2 rounded bg-white">
+                    <div className="flex flex-col gap-2 rounded bg-white py-3 px-4">
                         <Typography className="px-4 font-bold -mb-2">Lĩnh vực</Typography>
                         <Typography className="px-4">{company.business}</Typography>
 
@@ -115,7 +115,7 @@ const CompanyDetailPage = () => {
                     <div className="flex items-center justify-start px-4 py-3 bg-white -mb-2">
                         <Typography className="font-bold text-lg">Thông tin liên hệ</Typography>
                     </div>
-                    <div className="flex flex-col gap-2 rounded bg-white">
+                    <div className="flex flex-col gap-2 rounded bg-white py-3 px-4">
                         <Typography className="px-4 font-bold -mb-2">Website</Typography>
                         <a href={company.website} target="_blank" rel="noreferrer">
                             <Typography className="px-4">{company.website}</Typography>
@@ -129,7 +129,7 @@ const CompanyDetailPage = () => {
                 </Grid>
             </Grid>
             {user && (
-                <Grid container className="px-16" spacing={2}>
+                <Grid container className="px-20 pr-[4.5rem]" spacing={2}>
                     <Grid item xs={8} className="flex flex-col gap-3 bg-white px-4 py-3">
                         <Typography className="font-bold flex items-center justify-start py-2">
                             Các bài quiz của công ty
