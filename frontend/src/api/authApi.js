@@ -1,10 +1,10 @@
 import axiosInstanceGenerator from "./base";
-import { SessionUtil } from "../utils";
+import { LocalStorageUtil } from "../utils";
 const authApi = axiosInstanceGenerator();
 
 authApi.interceptors.request.use(
     (req) => {
-        req.headers.Authorization = `Bearer ${SessionUtil.get("token")}`;
+        req.headers.Authorization = `Bearer ${LocalStorageUtil.get("token")}`;
         return req;
     },
 

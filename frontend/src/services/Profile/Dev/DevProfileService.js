@@ -1,5 +1,5 @@
 import authApi from "../../../api/authApi";
-import { SessionUtil } from "../../../utils";
+import { LocalStorageUtil } from "../../../utils";
 
 const DevProfileService = {
     getCurrentUserApplications: async () => {
@@ -24,7 +24,7 @@ const DevProfileService = {
                     "Content-Type": "multipart/form-data",
                 },
             });
-            SessionUtil.set("user", response.data);
+            LocalStorageUtil.set("user", response.data);
             return {
                 data: response.data,
             };

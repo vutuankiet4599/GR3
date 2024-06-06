@@ -1,21 +1,21 @@
 import { StringUtil } from "./StringUtil";
 
 /**
- * Lớp util xử lý liên quan đến lưu trữ trong session storage
+ * Lớp util xử lý liên quan đến lưu trữ trong local storage
  */
-export const SessionUtil = {
+export const LocalStorageUtil = {
     /**
-     * Lấy giá trị được lưu trong session storage
+     * Lấy giá trị được lưu trong local storage
      * @param {string} key khóa để lưu giá trị
      * @returns {(any|null)} Giá trị được lưu. Nếu không tồn tại thì trả về null
      */
     get: (key) => {
-        let val = JSON.parse(sessionStorage.getItem(key));
+        let val = JSON.parse(localStorage.getItem(key));
         return val;
     },
 
     /**
-     * Lưu giá trị vào trong session storage
+     * Lưu giá trị vào trong local storage
      * @param {string} key khóa để lưu giá trị
      * @param {any} val giá trị được lưu
      * @returns {boolean} Lưu thành công trả ra true, ngược lại là false
@@ -26,13 +26,13 @@ export const SessionUtil = {
         }
 
         let stringifyValue = JSON.stringify(val);
-        sessionStorage.setItem(key, stringifyValue);
+        localStorage.setItem(key, stringifyValue);
 
         return true;
     },
 
     /**
-     * Xóa giá trị được lưu trong session storage
+     * Xóa giá trị được lưu trong local storage
      * @param {string} key khóa để xóa giá trị
      * @returns {boolean} Xóa thành công trả ra true, ngược lại trả ra false
      */
@@ -41,7 +41,14 @@ export const SessionUtil = {
             return false;
         }
 
-        sessionStorage.removeItem(key);
+        localStorage.removeItem(key);
         return true;
+    },
+
+    /**
+     * Xóa toàn bộ giá trị được lưu trong local storage
+     */
+    reset: () => {
+        localStorage.clear();
     },
 };

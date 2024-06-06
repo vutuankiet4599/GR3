@@ -1,5 +1,5 @@
-import { SessionUtil } from "./SessionUtil";
+import { LocalStorageUtil } from "./LocalStorageUtil";
 import { StringUtil } from "./StringUtil";
 import { ClassnameUtils } from "./ClassnameUtil";
 
-export { SessionUtil, StringUtil, ClassnameUtils };
+export { LocalStorageUtil, StringUtil, ClassnameUtils };

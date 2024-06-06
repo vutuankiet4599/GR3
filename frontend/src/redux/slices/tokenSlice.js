@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { SessionUtil } from "../../utils";
+import { LocalStorageUtil } from "../../utils";
 
 const tokenSlice = createSlice({
     name: "token",
-    initialState: SessionUtil.get("token"),
+    initialState: LocalStorageUtil.get("token"),
     reducers: {
         updateToken: (state, action) => {
             state = action.payload;

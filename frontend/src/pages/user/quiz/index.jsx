@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import QuizService from "../../../services/Quiz/QuizService";
-import { Container } from "@mui/material";
+import { Button, Container } from "@mui/material";
 import QuizStepper from "../../../components/QuizStepper";
 
 const QuizPage = () => {
@@ -12,6 +12,7 @@ const QuizPage = () => {
     });
     const { id } = useParams();
     const [score, setScore] = useState(0);
+    const navigate = useNavigate();
 
     const handleUpdateScore = (score) => {
         setScore((prev) => prev + score);
@@ -46,12 +47,17 @@ const QuizPage = () => {
     }, [id]);
 
     return (
-        <Container maxWidth="xl" className="flex items-center justify-center py-16">
-            <QuizStepper
-                questions={quiz.questions}
-                handleFinishQuiz={handleFinishQuiz}
-                handleUpdateScore={handleUpdateScore}
-            />
+        <Container maxWidth="xl">
+            <Button onClick={() => navigate(-1)} className="mt-5" variant="contained">
+                Trở về
+            </Button>
+            <div className="flex items-center justify-center py-16 w-full">
+                <QuizStepper
+                    questions={quiz.questions}
+                    handleFinishQuiz={handleFinishQuiz}
+                    handleUpdateScore={handleUpdateScore}
+                />
+            </div>
         </Container>
     );
 };

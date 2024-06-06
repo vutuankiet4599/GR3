@@ -55,3 +55,7 @@
     display: block;
     width: 100%;
 }
+
+.swiper-wrapper {
+    margin-bottom: 3rem;
+}

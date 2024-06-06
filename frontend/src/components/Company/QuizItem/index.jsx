@@ -43,7 +43,7 @@ const QuizItem = ({ index = 1, title, questions, users }) => {
                 {isShowUser &&
                     users.map((user, i) => (
                         <Typography key={i} className="border shadow px-4 py-3 flex items-center justify-start">
-                            {user.name} - {user.email}:{" "}
+                            {user.name} - {user.email}:&nbsp;
                             <span
                                 className={
                                     user.pivot.score > questions.length * 10 * 0.8
@@ -54,8 +54,8 @@ const QuizItem = ({ index = 1, title, questions, users }) => {
                                 }
                             >
                                 {user.pivot.score}
-                            </span>{" "}
-                            điểm.
+                            </span>
+                            &nbsp;điểm.
                         </Typography>
                     ))}
             </AccordionDetails>

@@ -1,13 +1,13 @@
 import authApi from "../../../api/authApi";
 import publicApi from "../../../api/publicApi";
-import { SessionUtil } from "../../../utils";
+import { LocalStorageUtil } from "../../../utils";
 
 const DevAuthService = {
     login: async (data) => {
         try {
             let response = await publicApi.post("/v1/auth/devs/login", data);
-            SessionUtil.set("user", response.data.user);
-            SessionUtil.set("token", response.data.token);
+            LocalStorageUtil.set("user", response.data.user);
+            LocalStorageUtil.set("token", response.data.token);
             return {
                 message: "Đăng nhập thành công",
                 data: {
@@ -16,7 +16,7 @@ const DevAuthService = {
                 },
             };
         } catch (error) {
-            if (error.response.status == 500) {
+            if (error.response?.status == 500) {
                 return {
                     isError: true,
                     message: "Lỗi hệ thống, mời quay lại sau",
@@ -50,7 +50,7 @@ const DevAuthService = {
                 message: "Tài khoản tạo mới thành công. Mời xác thực ở email để sử dụng.",
             };
         } catch (error) {
-            if (error.response.status == 500) {
+            if (error.response?.status == 500) {
                 return {
                     isError: true,
                     message: "Lỗi hệ thống, mời quay lại sau",
@@ -67,8 +67,8 @@ const DevAuthService = {
     logout: async () => {
         try {
             await authApi.post("/v1/auth/devs/logout");
-            SessionUtil.delete("user");
-            SessionUtil.delete("token");
+            LocalStorageUtil.delete("user");
+            LocalStorageUtil.delete("token");
             return {
                 message: "Đăng xuất thành công",
             };

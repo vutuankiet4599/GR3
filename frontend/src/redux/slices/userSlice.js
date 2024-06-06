@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { SessionUtil } from "../../utils/SessionUtil";
+import { LocalStorageUtil } from "../../utils";
 
 const getInitState = () => {
-    let data = SessionUtil.get("user");
+    let data = LocalStorageUtil.get("user");
+    console.log(data);
     if (data) {
         return data;
     }

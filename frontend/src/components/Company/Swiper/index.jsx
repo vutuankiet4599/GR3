@@ -4,7 +4,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "./style.css";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, EffectCoverflow, Pagination } from "swiper/modules";
+import { Autoplay, Pagination } from "swiper/modules";
 import CompanyCard from "../Card";
 import PropTypes from "prop-types";
 
@@ -17,23 +17,15 @@ const CompanySwiper = ({ companies }) => {
     };
 
     return (
-        <Container maxWidth="xl" className="px-4 py-16 flex items-center justify-center">
+        <Container maxWidth="xl" className="px-4 py-10 -mb-8 flex items-center justify-center">
             {companies && (
                 <Swiper
                     pagination={pagination}
-                    modules={[Pagination, Autoplay, EffectCoverflow]}
+                    modules={[Pagination, Autoplay]}
                     grabCursor={true}
                     centeredSlides={true}
                     slidesPerView={3}
                     loop={true}
-                    effect="coverflow"
-                    coverflowEffect={{
-                        rotate: -30,
-                        stretch: 0,
-                        depth: 100,
-                        modifier: 0.75,
-                        slideShadows: true,
-                    }}
                     className="mySwiper"
                     autoplay={true}
                 >

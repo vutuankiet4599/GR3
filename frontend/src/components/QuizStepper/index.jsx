@@ -71,7 +71,7 @@ const QuizStepper = ({ questions, handleUpdateScore, handleFinishQuiz }) => {
                         </Typography>
                         {shuffledAnswers.map((answer, index) => (
                             <Typography
-                                className={`cursor-pointer px-4 py-3 text-wrap border ${selectedAnswer === index ? (answer.isCorrect ? "bg-lime-300" : "bg-red-300") : "bg-white"} ${selectedAnswer === index && "bg-opacity-50 "}`}
+                                className={`cursor-pointer px-4 py-3 text-wrap border ${selectedAnswer === index ? "bg-opacity-50 bg-blue-300" : "bg-white"}`}
                                 key={index}
                                 onClick={() => handleAnswerClick(index)}
                             >

@@ -1,13 +1,13 @@
 import authApi from "../../../api/authApi";
 import publicApi from "../../../api/publicApi";
-import { SessionUtil } from "../../../utils";
+import { LocalStorageUtil } from "../../../utils";
 
 const CompanyAuthService = {
     login: async (data) => {
         try {
             let response = await publicApi.post("/v1/auth/companies/login", data);
-            SessionUtil.set("company", response.data.company);
-            SessionUtil.set("token", response.data.token);
+            LocalStorageUtil.set("company", response.data.company);
+            LocalStorageUtil.set("token", response.data.token);
             return {
                 message: "Đăng nhập thành công",
                 data: {
@@ -74,8 +74,8 @@ const CompanyAuthService = {
     logout: async () => {
         try {
             await authApi.post("/v1/auth/companies/logout");
-            SessionUtil.delete("company");
-            SessionUtil.delete("token");
+            LocalStorageUtil.delete("company");
+            LocalStorageUtil.delete("token");
             return {
                 message: "Đăng xuất thành công",
             };
