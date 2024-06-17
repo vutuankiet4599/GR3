@@ -17,11 +17,4 @@ COPY . .
 RUN composer dump-autoload --optimize
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
-
-FROM nginx:alpine
-WORKDIR /usr/share/nginx/html
-RUN rm -rf ./*
-COPY --from=build /var/www/html .
-COPY /nginx/default.conf /etc/nginx/conf.d/default.conf
-EXPOSE 8000
-CMD ["nginx", "-g", "daemon off;"]
+CMD [ "php-fpm" ]

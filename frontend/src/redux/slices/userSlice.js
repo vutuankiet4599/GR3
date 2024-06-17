@@ -3,7 +3,6 @@ import { LocalStorageUtil } from "../../utils";
 
 const getInitState = () => {
     let data = LocalStorageUtil.get("user");
-    console.log(data);
     if (data) {
         return data;
     }

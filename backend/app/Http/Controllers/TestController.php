@@ -29,9 +29,13 @@ class TestController extends Controller
         // return response()->json(['data' => $rs]);
         try {
             // Mail::to('vutuankiet4599@gmail.com')->send(new MailNotify(['url' => 'https://www.google.com/']));
-            // $data = ['url' => 'https://www.google.com'];
+            $data = ['url' => 'https://www.google.com'];
+            $usersArray = [['email' => 'vutuankiet4599@gmail.com']];
+            $users = array_map(function($user) {
+                return (object) $user;
+            }, $usersArray);
             // $users = User::all();
-            // SendEmail::dispatch($data, $users)->afterCommit();
+            SendEmail::dispatch($data, $users)->afterCommit();
             // return response()->json(['success' => true]);
             // event(new TestEvent(['message' => 'Test Success']));
             return response()->json(['success' => true]);

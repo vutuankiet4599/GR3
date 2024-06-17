@@ -1,4 +1,6 @@
 FROM node:20-alpine as build
+ARG VITE_APP_URL
+ARG VITE_BACKEND_HOST
 WORKDIR /app/frontend
 COPY package*.json ./
 RUN npm install
